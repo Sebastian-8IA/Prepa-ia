@@ -17,6 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { recommendUniversities, type RecommendUniversitiesOutput } from '@/ai/flows/recommend-universities';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const areasDeInteres = {
   'Tecnología': ['Ingeniería de Software', 'Ciencia de la Computación', 'Ingeniería de Sistemas'],
@@ -303,49 +304,53 @@ export default function EncontrarUniversidadPage() {
       {result && (
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-4">Universidades Recomendadas</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+          <Accordion type="single" collapsible className="w-full space-y-4">
             {result.recommendations.map((rec, index) => (
-              <Card key={index} className="flex flex-col h-full">
-                <CardHeader>
-                  <CardTitle className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <School className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                      <span>{rec.universityName}</span>
-                    </div>
-                     <Badge variant={rec.compatibilityPercentage > 80 ? "default" : "secondary"} className="flex gap-1.5 items-center whitespace-nowrap">
-                        <Percent className="h-3.5 w-3.5" />
-                        {rec.compatibilityPercentage}%
-                     </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow space-y-4">
-                    <p className="whitespace-pre-wrap text-sm text-muted-foreground">{rec.reason}</p>
-                    <Separator />
-                    <div className="space-y-3 text-sm">
-                        <div className="flex items-center">
-                            <TrendingUp className="h-4 w-4 mr-2 text-primary" />
-                            <span className="font-semibold mr-2">Salario Promedio:</span>
-                            <span>{rec.averageSalary}*</span>
-                        </div>
-                        <div className="flex items-center">
-                            <Briefcase className="h-4 w-4 mr-2 text-primary" />
-                            <span className="font-semibold mr-2">Tasa de Empleabilidad:</span>
-                            <span>{rec.employmentRate}*</span>
-                        </div>
-                        <div className="flex items-center">
-                            <Wallet className="h-4 w-4 mr-2 text-primary" />
-                            <span className="font-semibold mr-2">Ajuste Presupuesto:</span>
-                            <span>{rec.budgetFit}</span>
-                        </div>
-                    </div>
-                </CardContent>
-                <CardFooter className="flex-col items-start text-xs text-muted-foreground">
-                    <Separator className="mb-2"/>
-                    <p>* Datos referenciales de portales como Ponte en Carrera y webs de las universidades.</p>
-                </CardFooter>
-              </Card>
+              <AccordionItem value={`item-${index}`} key={index} className="border-b-0">
+                  <Card className="flex flex-col h-full">
+                    <AccordionTrigger className="hover:no-underline">
+                        <CardHeader className="flex-row items-center justify-between w-full p-4">
+                            <CardTitle className="flex items-center gap-3 text-xl">
+                                <School className="h-6 w-6 text-primary flex-shrink-0" />
+                                <span>{rec.universityName}</span>
+                            </CardTitle>
+                            <Badge variant={rec.compatibilityPercentage > 80 ? "default" : "secondary"} className="flex gap-1.5 items-center whitespace-nowrap ml-auto mr-4">
+                                <Percent className="h-3.5 w-3.5" />
+                                {rec.compatibilityPercentage}%
+                            </Badge>
+                        </CardHeader>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                        <CardContent className="pt-0 p-4 sm:p-6 space-y-4">
+                            <p className="whitespace-pre-wrap text-sm text-muted-foreground">{rec.reason}</p>
+                            <Separator />
+                            <div className="space-y-3 text-sm">
+                                <div className="flex items-center">
+                                    <TrendingUp className="h-4 w-4 mr-2 text-primary" />
+                                    <span className="font-semibold mr-2">Salario Promedio:</span>
+                                    <span>{rec.averageSalary}*</span>
+                                </div>
+                                <div className="flex items-center">
+                                    <Briefcase className="h-4 w-4 mr-2 text-primary" />
+                                    <span className="font-semibold mr-2">Tasa de Empleabilidad:</span>
+                                    <span>{rec.employmentRate}*</span>
+                                </div>
+                                <div className="flex items-center">
+                                    <Wallet className="h-4 w-4 mr-2 text-primary" />
+                                    <span className="font-semibold mr-2">Ajuste Presupuesto:</span>
+                                    <span>{rec.budgetFit}</span>
+                                </div>
+                            </div>
+                        </CardContent>
+                        <CardFooter className="flex-col items-start text-xs text-muted-foreground p-4 sm:p-6 pt-0">
+                            <Separator className="mb-4"/>
+                            <p>* Datos referenciales de portales como Ponte en Carrera y webs de las universidades.</p>
+                        </CardFooter>
+                    </AccordionContent>
+                  </Card>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
       )}
     </>
