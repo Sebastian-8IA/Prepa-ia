@@ -25,7 +25,12 @@ const RecommendUniversitiesOutputSchema = z.object({
   recommendations: z.array(
     z.object({
       universityName: z.string().describe('The name of the recommended university.'),
-      description: z.string().describe('A short description of the university and why it is recommended.'),
+      reason: z.string().describe('Detailed and categorized explanation of why the university is a good option (e.g., "Academic Strengths", "Infrastructure and Resources", "Additional Opportunities").'),
+      compatibilityPercentage: z.number().min(0).max(100).describe('A number from 0 to 100 indicating how well it aligns with the user\'s criteria.'),
+      averageSalary: z.string().describe('The average salary of a graduate of the career of interest at that university. (Referential data)'),
+      employmentRate: z.string().describe('The percentage of graduates of that career who get a job. (Referential data)'),
+      budgetFit: z.string().describe('Indicates whether the university\'s tuition fee fits the user\'s budget.'),
+      modality: z.string().describe('The study mode offered by the university.'),
     })
   ).length(3).describe('A list of 3 recommended universities.'),
 });
@@ -39,16 +44,22 @@ const prompt = ai.definePrompt({
   name: 'recommendUniversitiesPrompt',
   input: {schema: RecommendUniversitiesInputSchema},
   output: {schema: RecommendUniversitiesOutputSchema},
-  prompt: `You are a university advisor in Peru. A student is looking for university recommendations based on their preferences.
+  prompt: `You are an expert in higher education in Peru. Based on the following information, recommend the 3 best universities. Use your existing knowledge and web data (as in the "Ponte en Carrera" portals or from the universities themselves) to provide the most accurate information possible about salaries and employability.
 
-  Area of Interest: {{{areaOfInterest}}}
-  Desired Career: {{{desiredCareer}}}
-  Budget: {{{budget}}}
-  City: {{{city}}}
-  Study Mode: {{{studyMode}}}
-  Extra Details: {{#each extraDetails}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+Important: Always indicate that the salary and employability data are referential. The entire response must be in Spanish.
 
-  Recommend 3 universities in Peru that best match these criteria. Provide a short description for each university, explaining why it is a good fit for the student.  Format your answer as a JSON array.
+User preferences: Area of Interest: {{{areaOfInterest}}}, City: {{{city}}}, Study Mode: {{{studyMode}}}{{#if extraDetails}}, Extra Details: {{#each extraDetails}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+Budget: {{{budget}}}
+Career Aspirations: {{{desiredCareer}}}
+
+For each recommended university, provide the following information:
+1. **University name.**
+2. **Reason for recommendation:** Explain in detail and by category why the university is a good option (e.g., "Academic Strengths", "Infrastructure and Resources", "Additional Opportunities").
+3. **Compatibility percentage:** A number from 0 to 100 indicating how well it aligns with the user's criteria.
+4. **Average Salary:** The average salary of a graduate of the career of interest at that university. (Referential data)
+5. **Employability Rate:** The percentage of graduates of that career who get a job. (Referential data)
+6. **Budget fit:** Indicate whether the university's tuition fee fits the user's budget.
+7. **Modality:** The study mode offered by the university.
 `,
 });
 

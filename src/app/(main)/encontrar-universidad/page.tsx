@@ -4,17 +4,19 @@ import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Loader2, School, Search } from 'lucide-react';
+import { Loader2, School, Search, TrendingUp, Briefcase, Wallet, Percent } from 'lucide-react';
 
 import { PageHeader } from '@/components/app/page-header';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { recommendUniversities, type RecommendUniversitiesOutput } from '@/ai/flows/recommend-universities';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 
 const areasDeInteres = {
   'Tecnología': ['Ingeniería de Software', 'Ciencia de la Computación', 'Ingeniería de Sistemas'],
@@ -131,7 +133,7 @@ export default function EncontrarUniversidadPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Carrera Deseada</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!areaOfInterest}>
+                      <Select onValueChange={field.onChange} value={field.value} disabled={!areaOfInterest}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder={areaOfInterest ? "Selecciona una carrera" : "Elige un área primero"} />
@@ -220,7 +222,12 @@ export default function EncontrarUniversidadPage() {
                 name="extraDetails"
                 render={() => (
                     <FormItem>
-                        <FormLabel>Detalles Extra</FormLabel>
+                        <div className="mb-4">
+                          <FormLabel>Detalles Extra</FormLabel>
+                          <FormDescription>
+                            Selecciona aspectos adicionales que valoras en una universidad.
+                          </FormDescription>
+                        </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                         {detallesExtraOptions.map((item) => (
                             <FormField
@@ -231,7 +238,7 @@ export default function EncontrarUniversidadPage() {
                                 return (
                                 <FormItem
                                     key={item.id}
-                                    className="flex flex-row items-start space-x-3 space-y-0"
+                                    className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4 hover:bg-accent/50 transition-colors"
                                 >
                                     <FormControl>
                                     <Checkbox
@@ -247,7 +254,7 @@ export default function EncontrarUniversidadPage() {
                                         }}
                                     />
                                     </FormControl>
-                                    <FormLabel className="font-normal">
+                                    <FormLabel className="font-normal cursor-pointer">
                                     {item.label}
                                     </FormLabel>
                                 </FormItem>
@@ -275,36 +282,67 @@ export default function EncontrarUniversidadPage() {
 
       {loading && (
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader><Skeleton className="h-6 w-3/4" /></CardHeader>
-            <CardContent><Skeleton className="h-20 w-full" /></CardContent>
-          </Card>
-          <Card>
-            <CardHeader><Skeleton className="h-6 w-3/4" /></CardHeader>
-            <CardContent><Skeleton className="h-20 w-full" /></CardContent>
-          </Card>
-          <Card>
-            <CardHeader><Skeleton className="h-6 w-3/4" /></CardHeader>
-            <CardContent><Skeleton className="h-20 w-full" /></CardContent>
-          </Card>
+          {[...Array(3)].map((_, i) => (
+            <Card key={i}>
+              <CardHeader><Skeleton className="h-7 w-3/4" /></CardHeader>
+              <CardContent className="space-y-4">
+                  <Skeleton className="h-4 w-5/6" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-4/6" />
+              </CardContent>
+              <CardFooter className="flex-col items-start space-y-2">
+                <Skeleton className="h-5 w-1/2" />
+                <Skeleton className="h-5 w-1/2" />
+                <Skeleton className="h-5 w-1/2" />
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       )}
 
       {result && (
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-4">Universidades Recomendadas</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
             {result.recommendations.map((rec, index) => (
-              <Card key={index} className="flex flex-col">
+              <Card key={index} className="flex flex-col h-full">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <School className="h-6 w-6 text-primary" />
-                    {rec.universityName}
+                  <CardTitle className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <School className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                      <span>{rec.universityName}</span>
+                    </div>
+                     <Badge variant={rec.compatibilityPercentage > 80 ? "default" : "secondary"} className="flex gap-1.5 items-center whitespace-nowrap">
+                        <Percent className="h-3.5 w-3.5" />
+                        {rec.compatibilityPercentage}%
+                     </Badge>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardDescription>{rec.description}</CardDescription>
+                <CardContent className="flex-grow space-y-4">
+                    <p className="whitespace-pre-wrap text-sm text-muted-foreground">{rec.reason}</p>
+                    <Separator />
+                    <div className="space-y-3 text-sm">
+                        <div className="flex items-center">
+                            <TrendingUp className="h-4 w-4 mr-2 text-primary" />
+                            <span className="font-semibold mr-2">Salario Promedio:</span>
+                            <span>{rec.averageSalary}*</span>
+                        </div>
+                        <div className="flex items-center">
+                            <Briefcase className="h-4 w-4 mr-2 text-primary" />
+                            <span className="font-semibold mr-2">Tasa de Empleabilidad:</span>
+                            <span>{rec.employmentRate}*</span>
+                        </div>
+                        <div className="flex items-center">
+                            <Wallet className="h-4 w-4 mr-2 text-primary" />
+                            <span className="font-semibold mr-2">Ajuste Presupuesto:</span>
+                            <span>{rec.budgetFit}</span>
+                        </div>
+                    </div>
                 </CardContent>
+                <CardFooter className="flex-col items-start text-xs text-muted-foreground">
+                    <Separator className="mb-2"/>
+                    <p>* Datos referenciales de portales como Ponte en Carrera y webs de las universidades.</p>
+                </CardFooter>
               </Card>
             ))}
           </div>
@@ -313,3 +351,4 @@ export default function EncontrarUniversidadPage() {
     </>
   );
 }
+```
