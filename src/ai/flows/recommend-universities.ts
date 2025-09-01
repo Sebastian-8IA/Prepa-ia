@@ -17,6 +17,7 @@ const RecommendUniversitiesInputSchema = z.object({
   budget: z.string().describe('The budget of the student.'),
   city: z.string().describe('The city where the student wants to study.'),
   studyMode: z.string().describe('The study mode (e.g., online, in-person).'),
+  extraDetails: z.array(z.string()).describe('A list of extra details the student is looking for in a university, such as accreditations, labs, double degree, research, or scholarships.'),
 });
 export type RecommendUniversitiesInput = z.infer<typeof RecommendUniversitiesInputSchema>;
 
@@ -45,6 +46,7 @@ const prompt = ai.definePrompt({
   Budget: {{{budget}}}
   City: {{{city}}}
   Study Mode: {{{studyMode}}}
+  Extra Details: {{#each extraDetails}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 
   Recommend 3 universities in Peru that best match these criteria. Provide a short description for each university, explaining why it is a good fit for the student.  Format your answer as a JSON array.
 `,
