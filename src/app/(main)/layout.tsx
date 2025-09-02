@@ -17,9 +17,9 @@ export default function MainLayout({
 }) {
   return (
     <SidebarProvider>
-      <Sidebar variant="inset" side="left">
-        <SidebarHeader>
-          <div className="flex items-center gap-3 p-2 group-data-[collapsible=icon]:justify-center">
+      <Sidebar variant="sidebar" side="left" collapsible="icon">
+        <SidebarHeader className="p-4">
+          <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
             <Logo />
             <div className="flex flex-col group-data-[collapsible=icon]:hidden">
               <Link href="/" className="font-semibold text-lg text-sidebar-foreground">
@@ -29,16 +29,16 @@ export default function MainLayout({
             </div>
           </div>
         </SidebarHeader>
-        <SidebarContent className="p-2">
+        <SidebarContent className="p-4">
           <SidebarNav />
         </SidebarContent>
       </Sidebar>
-      <SidebarInset>
-        <header className="sticky top-0 z-10 flex items-center h-14 border-b bg-background/80 backdrop-blur-sm px-4 md:hidden">
+      <div className="flex-1">
+        <header className="sticky top-0 z-40 flex items-center h-16 border-b bg-background/80 backdrop-blur-sm px-4 md:hidden">
           <SidebarTrigger />
         </header>
         <main className="p-4 sm:p-6 lg:p-8">{children}</main>
-      </SidebarInset>
+      </div>
     </SidebarProvider>
   );
 }

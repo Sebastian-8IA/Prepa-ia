@@ -92,16 +92,16 @@ export default function EncontrarUniversidadPage() {
   };
 
   return (
-    <>
+    <div className="animate-in">
       <PageHeader
-        title="Encontrar mi Universidad"
+        title="Encuentra tu Universidad Ideal"
         description="Completa tus preferencias y deja que la IA te recomiende las mejores universidades en Perú para ti."
       />
 
       <Card>
         <CardContent className="p-6">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
@@ -224,7 +224,7 @@ export default function EncontrarUniversidadPage() {
                 render={() => (
                     <FormItem>
                         <div className="mb-4">
-                          <FormLabel>Detalles Extra</FormLabel>
+                          <FormLabel className="text-base">Detalles Extra</FormLabel>
                           <FormDescription>
                             Selecciona aspectos adicionales que valoras en una universidad.
                           </FormDescription>
@@ -239,7 +239,7 @@ export default function EncontrarUniversidadPage() {
                                 return (
                                 <FormItem
                                     key={item.id}
-                                    className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4 hover:bg-accent/50 transition-colors"
+                                    className="flex flex-row items-center space-x-3 space-y-0 rounded-xl border p-4 hover:bg-accent/50 transition-colors cursor-pointer"
                                 >
                                     <FormControl>
                                     <Checkbox
@@ -255,7 +255,7 @@ export default function EncontrarUniversidadPage() {
                                         }}
                                     />
                                     </FormControl>
-                                    <FormLabel className="font-normal cursor-pointer">
+                                    <FormLabel className="font-normal cursor-pointer w-full">
                                     {item.label}
                                     </FormLabel>
                                 </FormItem>
@@ -270,7 +270,7 @@ export default function EncontrarUniversidadPage() {
                 />
 
               <div>
-                <Button type="submit" disabled={loading} className="w-full sm:w-auto">
+                <Button type="submit" disabled={loading} size="lg" className="w-full sm:w-auto">
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   <Search className="mr-2 h-4 w-4" />
                   Buscar Universidades
@@ -302,47 +302,58 @@ export default function EncontrarUniversidadPage() {
       )}
 
       {result && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Universidades Recomendadas</h2>
+        <div className="mt-8 animate-in">
+          <h2 className="text-3xl font-bold mb-6">Universidades Recomendadas</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
             {result.recommendations.map((rec, index) => (
               <AccordionItem value={`item-${index}`} key={index} className="border-b-0">
-                  <Card className="flex flex-col h-full">
-                    <AccordionTrigger className="hover:no-underline">
-                        <CardHeader className="flex-row items-center justify-between w-full p-4">
+                  <Card className="flex flex-col h-full overflow-hidden">
+                    <AccordionTrigger className="hover:no-underline group">
+                        <CardHeader className="flex-row items-center justify-between w-full p-6">
                             <CardTitle className="flex items-center gap-3 text-xl">
-                                <School className="h-6 w-6 text-primary flex-shrink-0" />
-                                <span>{rec.universityName}</span>
+                                <School className="h-8 w-8 text-primary flex-shrink-0" />
+                                <span className="text-left">{rec.universityName}</span>
                             </CardTitle>
-                            <Badge variant={rec.compatibilityPercentage > 80 ? "default" : "secondary"} className="flex gap-1.5 items-center whitespace-nowrap ml-auto mr-4">
-                                <Percent className="h-3.5 w-3.5" />
-                                {rec.compatibilityPercentage}%
-                            </Badge>
+                            <div className="flex items-center gap-4">
+                              <Badge variant={rec.compatibilityPercentage > 80 ? "default" : "secondary"} className="flex gap-1.5 items-center whitespace-nowrap h-8 text-sm">
+                                  <Percent className="h-4 w-4" />
+                                  {rec.compatibilityPercentage}%
+                              </Badge>
+                              <div className="p-2 rounded-full bg-secondary/50 group-data-[state=open]:rotate-180 transition-transform">
+                                <ChevronDown className="h-5 w-5"/>
+                              </div>
+                            </div>
                         </CardHeader>
                     </AccordionTrigger>
                     <AccordionContent>
-                        <CardContent className="pt-0 p-4 sm:p-6 space-y-4">
-                            <p className="whitespace-pre-wrap text-sm text-muted-foreground">{rec.reason}</p>
+                        <CardContent className="pt-0 p-6 space-y-4">
+                            <p className="whitespace-pre-wrap text-base text-muted-foreground">{rec.reason}</p>
                             <Separator />
-                            <div className="space-y-3 text-sm">
-                                <div className="flex items-center">
-                                    <TrendingUp className="h-4 w-4 mr-2 text-primary" />
-                                    <span className="font-semibold mr-2">Salario Promedio:</span>
-                                    <span>{rec.averageSalary}*</span>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                                <div className="flex items-center p-3 rounded-lg bg-secondary/50">
+                                    <TrendingUp className="h-5 w-5 mr-3 text-primary" />
+                                    <div>
+                                      <span className="font-semibold mr-2">Salario Promedio:</span>
+                                      <span>{rec.averageSalary}*</span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center">
-                                    <Briefcase className="h-4 w-4 mr-2 text-primary" />
-                                    <span className="font-semibold mr-2">Tasa de Empleabilidad:</span>
-                                    <span>{rec.employmentRate}*</span>
+                                <div className="flex items-center p-3 rounded-lg bg-secondary/50">
+                                    <Briefcase className="h-5 w-5 mr-3 text-primary" />
+                                    <div>
+                                      <span className="font-semibold mr-2">Tasa de Empleabilidad:</span>
+                                      <span>{rec.employmentRate}*</span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center">
-                                    <Wallet className="h-4 w-4 mr-2 text-primary" />
-                                    <span className="font-semibold mr-2">Ajuste Presupuesto:</span>
-                                    <span>{rec.budgetFit}</span>
+                                <div className="flex items-center p-3 rounded-lg bg-secondary/50">
+                                    <Wallet className="h-5 w-5 mr-3 text-primary" />
+                                    <div>
+                                      <span className="font-semibold mr-2">Ajuste Presupuesto:</span>
+                                      <span>{rec.budgetFit}</span>
+                                    </div>
                                 </div>
                             </div>
                         </CardContent>
-                        <CardFooter className="flex-col items-start text-xs text-muted-foreground p-4 sm:p-6 pt-0">
+                        <CardFooter className="flex-col items-start text-xs text-muted-foreground p-6 pt-0">
                             <Separator className="mb-4"/>
                             <p>* Datos referenciales de portales como Ponte en Carrera y webs de las universidades.</p>
                         </CardFooter>
@@ -353,6 +364,6 @@ export default function EncontrarUniversidadPage() {
           </Accordion>
         </div>
       )}
-    </>
+    </div>
   );
 }

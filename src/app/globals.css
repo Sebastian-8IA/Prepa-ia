@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: 210 100% 97%; /* #F0F8FF */
-    --foreground: 224 71% 4%; /* A dark blue for text */
+    --background: 220 20% 98%; /* Light bluish gray */
+    --foreground: 224 71% 4%; /* Dark blue for text */
 
     --card: 0 0% 100%;
     --card-foreground: 224 71% 4%;
@@ -13,74 +13,66 @@
     --popover: 0 0% 100%;
     --popover-foreground: 224 71% 4%;
 
-    --primary: 196 49% 64%; /* #72BCD4 */
-    --primary-foreground: 224 71% 4%;
+    --primary: 220 90% 55%; /* A more vibrant blue */
+    --primary-foreground: 0 0% 100%; /* White text on primary */
 
-    --secondary: 210 100% 92%;
-    --secondary-foreground: 224 71% 4%;
+    --secondary: 220 15% 95%; /* Lighter gray for secondary elements */
+    --secondary-foreground: 224 71% 15%;
 
-    --muted: 210 100% 92%;
+    --muted: 220 15% 95%;
     --muted-foreground: 224 71% 25%;
 
-    --accent: 201 32% 49%; /* #558BA5 */
+    --accent: 220 90% 60%; /* Slightly lighter blue for accent */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 72% 51%; /* A stronger red */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 210 100% 88%;
-    --input: 210 100% 88%;
-    --ring: 196 49% 64%;
+    --border: 220 15% 90%;
+    --input: 220 15% 92%;
+    --ring: 220 90% 55%;
     
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* Larger radius for a softer look */
 
-    --sidebar-background: 210 100% 98%;
-    --sidebar-foreground: 224 71% 10%;
-    --sidebar-primary: 201 32% 49%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 210 100% 92%;
-    --sidebar-accent-foreground: 224 71% 4%;
-    --sidebar-border: 210 100% 90%;
-    --sidebar-ring: 196 49% 64%;
+    --sidebar-background: 224 71% 4%; /* Dark blue sidebar */
+    --sidebar-foreground: 220 20% 98%;
+    --sidebar-primary: 220 90% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 224 71% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 224 71% 10%;
+    --sidebar-ring: 220 90% 60%;
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 210 100% 98%;
-
-    --card: 224 71% 4%;
-    --card-foreground: 210 100% 98%;
-
-    --popover: 224 71% 4%;
-    --popover-foreground: 210 100% 98%;
-
-    --primary: 196 49% 64%;
-    --primary-foreground: 224 71% 4%;
-
-    --secondary: 224 71% 10%;
-    --secondary-foreground: 210 100% 98%;
-
-    --muted: 224 71% 10%;
-    --muted-foreground: 210 100% 90%;
-
-    --accent: 201 32% 49%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 224 71% 10%;
-    --input: 224 71% 10%;
-    --ring: 196 49% 64%;
+    --background: 222 84% 5%;
+    --foreground: 210 40% 98%;
+    --card: 222 84% 7%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 84% 5%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 217 91% 60%;
     
-    --sidebar-background: 224 71% 6%;
-    --sidebar-foreground: 210 100% 98%;
-    --sidebar-primary: 196 49% 64%;
-    --sidebar-primary-foreground: 224 71% 4%;
-    --sidebar-accent: 224 71% 12%;
-    --sidebar-accent-foreground: 210 100% 98%;
-    --sidebar-border: 224 71% 10%;
-    --sidebar-ring: 196 49% 64%;
+    --sidebar-background: 222 84% 4%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 217 33% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 217 91% 60%;
   }
 }
 
@@ -90,5 +82,22 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .animate-in {
+    animation: animate-in 0.5s ease-out;
+  }
+  
+  @keyframes animate-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

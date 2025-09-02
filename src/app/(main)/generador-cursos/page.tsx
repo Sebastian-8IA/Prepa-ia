@@ -11,9 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { fileToDataUri } from '@/lib/utils';
@@ -39,7 +37,7 @@ const ModuleView = ({ module, onGenerateQuiz }: { module: ModuleWithQuiz; onGene
   return (
     <div className="space-y-4">
       {module.summaryAndQuiz ? (
-        <div className="space-y-6">
+        <div className="space-y-6 animate-in">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg"><BookText className="h-5 w-5" /> Resumen del Módulo</CardTitle>
@@ -123,7 +121,7 @@ export default function GeneradorCursosPage() {
   const fileRef = form.register('file');
 
   return (
-    <>
+    <div className="animate-in">
       <PageHeader
         title="Generador de Cursos"
         description="Introduce un tema y un archivo de referencia opcional para que la IA cree una estructura de curso detallada para ti."
@@ -191,7 +189,7 @@ export default function GeneradorCursosPage() {
                 )}
               />
 
-              <Button type="submit" disabled={loading} className="w-full sm:w-auto">
+              <Button type="submit" disabled={loading} size="lg" className="w-full sm:w-auto">
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <Send className="mr-2 h-4 w-4" />
                 Generar Estructura
@@ -203,32 +201,34 @@ export default function GeneradorCursosPage() {
 
       {loading && (
         <div className="mt-8 space-y-4">
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-16 w-full rounded-xl" />
+          <Skeleton className="h-16 w-full rounded-xl" />
+          <Skeleton className="h-16 w-full rounded-xl" />
         </div>
       )}
 
       {result && (
-        <div className="mt-8">
+        <div className="mt-8 animate-in">
           <h2 className="text-2xl font-semibold mb-4">Estructura del Curso Generada</h2>
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full space-y-4">
             {result.map((module) => (
-              <AccordionItem value={`item-${module.id}`} key={module.id}>
-                <AccordionTrigger className="text-left hover:no-underline">
-                  <div className="flex flex-col">
-                    <span className="font-semibold text-base">{module.title}</span>
-                    <span className="text-sm text-muted-foreground font-normal mt-1">{module.description}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <ModuleView module={module} onGenerateQuiz={handleGenerateQuiz} />
-                </AccordionContent>
+              <AccordionItem value={`item-${module.id}`} key={module.id} className="border-b-0">
+                <Card>
+                  <AccordionTrigger className="text-left hover:no-underline p-6">
+                    <div className="flex flex-col">
+                      <span className="font-semibold text-base">{module.title}</span>
+                      <span className="text-sm text-muted-foreground font-normal mt-1">{module.description}</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="p-6 pt-0">
+                    <ModuleView module={module} onGenerateQuiz={handleGenerateQuiz} />
+                  </AccordionContent>
+                </Card>
               </AccordionItem>
             ))}
           </Accordion>
         </div>
       )}
-    </>
+    </div>
   );
 }

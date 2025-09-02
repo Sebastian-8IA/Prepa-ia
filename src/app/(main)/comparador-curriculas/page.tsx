@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useFieldArray, useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { GitCompareArrows, Loader2, File as FileIcon, Plus, Trash2, Scale, Star, ThumbsUp, ThumbsDown, BookCopy } from 'lucide-react';
+import { GitCompareArrows, Loader2, File as FileIcon, Plus, Trash2, Scale, Star, ThumbsUp, ThumbsDown, BookCopy, ChevronDown } from 'lucide-react';
 
 import { PageHeader } from '@/components/app/page-header';
 import { Button } from '@/components/ui/button';
@@ -77,7 +77,7 @@ export default function ComparadorCurriculasPage() {
   };
 
   return (
-    <>
+    <div className="animate-in">
       <PageHeader
         title="Comparador de Mallas Curriculares"
         description="Sube las mallas curriculares de 2 o 3 universidades y recibe un análisis comparativo y una recomendación personalizada."
@@ -168,7 +168,7 @@ export default function ComparadorCurriculasPage() {
                 )}
               />
 
-              <Button type="submit" disabled={loading} className="w-full sm:w-auto">
+              <Button type="submit" disabled={loading} size="lg" className="w-full sm:w-auto">
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <GitCompareArrows className="mr-2 h-4 w-4" />
                 Comparar y Recomendar
@@ -181,25 +181,25 @@ export default function ComparadorCurriculasPage() {
       {loading && (
         <div className="mt-8 space-y-6">
             <Card>
-                <CardHeader><Skeleton className="h-6 w-1/4" /></CardHeader>
+                <CardHeader><Skeleton className="h-6 w-1/4 rounded-lg" /></CardHeader>
                 <CardContent className="space-y-2">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-5/6" />
+                    <Skeleton className="h-4 w-full rounded-lg" />
+                    <Skeleton className="h-4 w-5/6 rounded-lg" />
                 </CardContent>
             </Card>
              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {[...Array(2)].map((_, i) => (
                     <Card key={i}>
-                        <CardHeader><Skeleton className="h-6 w-1/3" /></CardHeader>
+                        <CardHeader><Skeleton className="h-6 w-1/3 rounded-lg" /></CardHeader>
                         <CardContent className="space-y-4">
-                            <Skeleton className="h-4 w-1/4" />
+                            <Skeleton className="h-4 w-1/4 rounded-lg" />
                             <div className="pl-4 space-y-2">
-                                <Skeleton className="h-4 w-full" />
-                                <Skeleton className="h-4 w-5/6" />
+                                <Skeleton className="h-4 w-full rounded-lg" />
+                                <Skeleton className="h-4 w-5/6 rounded-lg" />
                             </div>
-                             <Skeleton className="h-4 w-1/4" />
+                             <Skeleton className="h-4 w-1/4 rounded-lg" />
                              <div className="pl-4 space-y-2">
-                                <Skeleton className="h-4 w-full" />
+                                <Skeleton className="h-4 w-full rounded-lg" />
                             </div>
                         </CardContent>
                     </Card>
@@ -209,22 +209,22 @@ export default function ComparadorCurriculasPage() {
       )}
 
       {result && (
-        <div className="mt-8 space-y-6">
+        <div className="mt-8 space-y-8 animate-in">
             <Card>
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <BookCopy className="h-6 w-6 text-primary"/>
+                    <CardTitle className="flex items-center gap-3">
+                        <BookCopy className="h-7 w-7 text-primary"/>
                         Resumen del Análisis
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground">{result.summary}</p>
+                    <p className="text-base text-muted-foreground">{result.summary}</p>
                 </CardContent>
             </Card>
 
             <div>
-                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                    <Scale className="h-6 w-6 text-primary"/>
+                <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+                    <Scale className="h-7 w-7 text-primary"/>
                     Análisis Comparativo
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -233,21 +233,21 @@ export default function ComparadorCurriculasPage() {
                             <CardHeader>
                                 <CardTitle>{uni.university}</CardTitle>
                             </CardHeader>
-                            <CardContent className="space-y-4 flex-grow">
+                            <CardContent className="space-y-6 flex-grow">
                                 <div>
-                                    <h4 className="font-semibold mb-2 flex items-center gap-2 text-green-600">
+                                    <h4 className="font-semibold mb-3 flex items-center gap-2 text-green-600">
                                         <ThumbsUp className="h-5 w-5"/> Ventajas
                                     </h4>
-                                    <ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
+                                    <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
                                         {uni.advantages.map((adv, i) => <li key={i}>{adv}</li>)}
                                     </ul>
                                 </div>
                                 <Separator />
                                 <div>
-                                    <h4 className="font-semibold mb-2 flex items-center gap-2 text-red-600">
+                                    <h4 className="font-semibold mb-3 flex items-center gap-2 text-red-600">
                                         <ThumbsDown className="h-5 w-5"/> Desventajas
                                     </h4>
-                                    <ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
+                                    <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
                                         {uni.disadvantages.map((dis, i) => <li key={i}>{dis}</li>)}
                                     </ul>
                                 </div>
@@ -257,21 +257,21 @@ export default function ComparadorCurriculasPage() {
                 </div>
             </div>
 
-            <Card className="bg-secondary">
+            <Card className="bg-secondary/50 border-primary/50 border-2">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Star className="h-6 w-6 text-amber-500"/>
+                    <CardTitle className="flex items-center gap-3">
+                        <Star className="h-7 w-7 text-amber-500"/>
                         Recomendación Final
                     </CardTitle>
                     <CardDescription>Basado en los archivos y tus criterios, la mejor opción es:</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2">
                     <h3 className="text-xl font-semibold text-foreground">{result.recommendation.university}</h3>
-                    <p className="whitespace-pre-wrap text-sm">{result.recommendation.reason}</p>
+                    <p className="whitespace-pre-wrap text-base">{result.recommendation.reason}</p>
                 </CardContent>
             </Card>
         </div>
       )}
-    </>
+    </div>
   );
 }
