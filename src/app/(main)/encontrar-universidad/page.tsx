@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Loader2, School, Search, TrendingUp, Briefcase, Wallet, Percent, ChevronDown, BadgeCheck, Beaker, Layers, Microscope, Ticket } from 'lucide-react';
+import { Loader2, School, Search, TrendingUp, Briefcase, Wallet, Percent, ChevronDown, BadgeCheck, Beaker, Layers, Microscope, Ticket, Shapes, BookMarked, PiggyBank, MapPin, ClipboardList, Globe } from 'lucide-react';
 
 import { PageHeader } from '@/components/app/page-header';
 import { Button } from '@/components/ui/button';
@@ -41,6 +41,7 @@ const detallesExtraOptions = [
     { id: 'doble_titulacion', label: 'Doble Titulación', icon: Layers },
     { id: 'investigacion', label: 'Investigación', icon: Microscope },
     { id: 'becas', label: 'Becas', icon: Ticket },
+    { id: 'estudios_extranjero', label: 'Estudios Extranjero', icon: Globe },
 ] as const;
 
 const formSchema = z.object({
@@ -108,7 +109,7 @@ export default function EncontrarUniversidadPage() {
                   name="areaOfInterest"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Área de Interés</FormLabel>
+                      <FormLabel className="flex items-center gap-2"><Shapes className="h-4 w-4"/>Área de Interés</FormLabel>
                       <Select onValueChange={(value) => {
                         field.onChange(value);
                         form.setValue('desiredCareer', '');
@@ -133,7 +134,7 @@ export default function EncontrarUniversidadPage() {
                   name="desiredCareer"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Carrera Deseada</FormLabel>
+                      <FormLabel className="flex items-center gap-2"><BookMarked className="h-4 w-4"/>Carrera Deseada</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value} disabled={!areaOfInterest}>
                         <FormControl>
                           <SelectTrigger>
@@ -155,7 +156,7 @@ export default function EncontrarUniversidadPage() {
                   name="budget"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Presupuesto Mensual</FormLabel>
+                      <FormLabel className="flex items-center gap-2"><PiggyBank className="h-4 w-4"/>Presupuesto Mensual</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
@@ -177,7 +178,7 @@ export default function EncontrarUniversidadPage() {
                   name="city"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Ciudad</FormLabel>
+                      <FormLabel className="flex items-center gap-2"><MapPin className="h-4 w-4"/>Ciudad</FormLabel>
                        <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
@@ -199,8 +200,8 @@ export default function EncontrarUniversidadPage() {
                   name="studyMode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Modalidad de Estudio</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormLabel className="flex items-center gap-2"><ClipboardList className="h-4 w-4"/>Modalidad de Estudio</FormLabel>
+                      <Select onValue-change={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecciona una modalidad" />
@@ -229,7 +230,7 @@ export default function EncontrarUniversidadPage() {
                             Selecciona aspectos adicionales que valoras en una universidad.
                           </CardDescription>
                         </div>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                         {detallesExtraOptions.map((item) => (
                             <FormField
                             key={item.id}
@@ -257,7 +258,7 @@ export default function EncontrarUniversidadPage() {
                                           }}
                                       />
                                     </FormControl>
-                                    <FormLabel className="font-normal cursor-pointer text-sm">
+                                    <FormLabel className="font-normal cursor-pointer text-sm text-center">
                                       {item.label}
                                     </FormLabel>
                                     </div>
@@ -370,3 +371,5 @@ export default function EncontrarUniversidadPage() {
     </div>
   );
 }
+
+    

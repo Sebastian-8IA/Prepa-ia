@@ -17,7 +17,7 @@ const RecommendUniversitiesInputSchema = z.object({
   budget: z.string().describe('The budget of the student.'),
   city: z.string().describe('The city where the student wants to study.'),
   studyMode: z.string().describe('The study mode (e.g., online, in-person).'),
-  extraDetails: z.array(z.string()).describe('A list of extra details the student is looking for in a university, such as accreditations, labs, double degree, research, or scholarships.'),
+  extraDetails: z.array(z.string()).describe('A list of extra details the student is looking for in a university, such as accreditations, labs, double degree, research, scholarships, or foreign studies.'),
 });
 export type RecommendUniversitiesInput = z.infer<typeof RecommendUniversitiesInputSchema>;
 
@@ -74,3 +74,5 @@ const recommendUniversitiesFlow = ai.defineFlow(
     return output!;
   }
 );
+
+    
