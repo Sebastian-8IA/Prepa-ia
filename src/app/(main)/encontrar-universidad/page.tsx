@@ -9,7 +9,7 @@ import { Loader2, School, Search, TrendingUp, Briefcase, Wallet, Percent, Chevro
 import { PageHeader } from '@/components/app/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from '@/components/ui/skeleton';
@@ -90,6 +90,30 @@ export default function EncontrarUniversidadPage() {
     } finally {
       setLoading(false);
     }
+  };
+  
+  const renderReason = (reason: string) => {
+    const parts = reason.split(/(\*\*.*?\*\*)/g).filter(part => part.trim() !== '');
+    return (
+      <div className="space-y-3">
+        {parts.map((part, index) => {
+          if (part.startsWith('**') && part.endsWith('**')) {
+            const title = part.slice(2, -2);
+            const content = parts[index + 1] || '';
+            if (parts[index -1]?.startsWith('**')) return null;
+
+            return (
+              <div key={index}>
+                <p className="font-semibold text-foreground">{title}</p>
+                <p className="whitespace-pre-wrap text-base text-muted-foreground mt-1">{content.trim()}</p>
+              </div>
+            );
+          }
+          if (parts[index -1]?.startsWith('**')) return null;
+          return <p key={index} className="whitespace-pre-wrap text-base text-muted-foreground">{part.trim()}</p>;
+        })}
+      </div>
+    );
   };
 
   return (
@@ -201,7 +225,7 @@ export default function EncontrarUniversidadPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="flex items-center gap-2"><ClipboardList className="h-4 w-4"/>Modalidad de Estudio</FormLabel>
-                      <Select onValue-change={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecciona una modalidad" />
@@ -226,9 +250,9 @@ export default function EncontrarUniversidadPage() {
                     <FormItem>
                         <div className="mb-4">
                           <FormLabel className="text-base">Detalles Extra</FormLabel>
-                          <CardDescription>
+                          <FormDescription>
                             Selecciona aspectos adicionales que valoras en una universidad.
-                          </CardDescription>
+                          </FormDescription>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                         {detallesExtraOptions.map((item) => (
@@ -312,8 +336,8 @@ export default function EncontrarUniversidadPage() {
             {result.recommendations.map((rec, index) => (
               <AccordionItem value={`item-${index}`} key={index} className="border-b-0">
                   <Card className="flex flex-col h-full overflow-hidden">
-                    <AccordionTrigger className="hover:no-underline group">
-                        <CardHeader className="flex-row items-center justify-between w-full p-6">
+                    <AccordionTrigger className="hover:no-underline group p-6">
+                        <div className="flex items-center justify-between w-full">
                             <CardTitle className="flex items-center gap-3 text-xl">
                                 <School className="h-8 w-8 text-primary flex-shrink-0" />
                                 <span className="text-left">{rec.universityName}</span>
@@ -327,11 +351,11 @@ export default function EncontrarUniversidadPage() {
                                 <ChevronDown className="h-5 w-5"/>
                               </div>
                             </div>
-                        </CardHeader>
+                        </div>
                     </AccordionTrigger>
                     <AccordionContent>
                         <CardContent className="pt-0 p-6 space-y-4">
-                            <p className="whitespace-pre-wrap text-base text-muted-foreground">{rec.reason}</p>
+                            {renderReason(rec.reason)}
                             <Separator />
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                                 <div className="flex items-center p-3 rounded-lg bg-secondary/50">
@@ -347,6 +371,7 @@ export default function EncontrarUniversidadPage() {
                                       <span className="font-semibold mr-2">Tasa de Empleabilidad:</span>
                                       <span>{rec.employmentRate}*</span>
                                     </div>
+
                                 </div>
                                 <div className="flex items-center p-3 rounded-lg bg-secondary/50">
                                     <Wallet className="h-5 w-5 mr-3 text-primary" />
@@ -371,5 +396,3 @@ export default function EncontrarUniversidadPage() {
     </div>
   );
 }
-
-    

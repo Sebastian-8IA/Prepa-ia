@@ -25,7 +25,7 @@ const RecommendUniversitiesOutputSchema = z.object({
   recommendations: z.array(
     z.object({
       universityName: z.string().describe('The name of the recommended university.'),
-      reason: z.string().describe('Detailed and categorized explanation of why the university is a good option (e.g., "Academic Strengths", "Infrastructure and Resources", "Additional Opportunities").'),
+      reason: z.string().describe('Detailed and categorized explanation of why the university is a good option (e.g., "**Fortalezas Académicas**\n- Descripción."). Use markdown for bold titles.'),
       compatibilityPercentage: z.number().min(0).max(100).describe('A number from 0 to 100 indicating how well it aligns with the user\'s criteria.'),
       averageSalary: z.string().describe('The average salary of a graduate of the career of interest at that university. (Referential data)'),
       employmentRate: z.string().describe('The percentage of graduates of that career who get a job. (Referential data)'),
@@ -54,7 +54,7 @@ Career Aspirations: {{{desiredCareer}}}
 
 For each recommended university, provide the following information:
 1. **University name.**
-2. **Reason for recommendation:** Explain in detail and by category why the university is a good option (e.g., "Academic Strengths", "Infrastructure and Resources", "Additional Opportunities").
+2. **Reason for recommendation:** Explain in detail and by category why the university is a good option (e.g., "**Fortalezas Académicas**\n- Descripción..."). Use markdown bold for titles and newlines to separate categories like "Fortalezas Académicas", "Infraestructura y Recursos", "Oportunidades Adicionales".
 3. **Compatibility percentage:** A number from 0 to 100 indicating how well it aligns with the user's criteria.
 4. **Average Salary:** The average salary of a graduate of the career of interest at that university. (Referential data)
 5. **Employability Rate:** The percentage of graduates of that career who get a job. (Referential data)
@@ -74,5 +74,3 @@ const recommendUniversitiesFlow = ai.defineFlow(
     return output!;
   }
 );
-
-    
