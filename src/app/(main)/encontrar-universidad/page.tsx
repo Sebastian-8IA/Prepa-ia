@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Loader2, School, Search, TrendingUp, Briefcase, Wallet, Percent } from 'lucide-react';
+import { Loader2, School, Search, TrendingUp, Briefcase, Wallet, Percent, ChevronDown, BadgeCheck, Beaker, Layers, Microscope, Ticket } from 'lucide-react';
 
 import { PageHeader } from '@/components/app/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from '@/components/ui/skeleton';
@@ -36,11 +36,11 @@ const presupuestos = [
 const ciudades = ['Lima', 'Arequipa', 'Trujillo', 'Cusco', 'Piura', 'Chiclayo'];
 
 const detallesExtraOptions = [
-    { id: 'acreditaciones', label: 'Acreditaciones' },
-    { id: 'laboratorios', label: 'Laboratorios' },
-    { id: 'doble_titulacion', label: 'Doble Titulación' },
-    { id: 'investigacion', label: 'Investigación' },
-    { id: 'becas', label: 'Becas' },
+    { id: 'acreditaciones', label: 'Acreditaciones', icon: BadgeCheck },
+    { id: 'laboratorios', label: 'Laboratorios', icon: Beaker },
+    { id: 'doble_titulacion', label: 'Doble Titulación', icon: Layers },
+    { id: 'investigacion', label: 'Investigación', icon: Microscope },
+    { id: 'becas', label: 'Becas', icon: Ticket },
 ] as const;
 
 const formSchema = z.object({
@@ -225,9 +225,9 @@ export default function EncontrarUniversidadPage() {
                     <FormItem>
                         <div className="mb-4">
                           <FormLabel className="text-base">Detalles Extra</FormLabel>
-                          <FormDescription>
+                          <CardDescription>
                             Selecciona aspectos adicionales que valoras en una universidad.
-                          </FormDescription>
+                          </CardDescription>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                         {detallesExtraOptions.map((item) => (
@@ -239,25 +239,28 @@ export default function EncontrarUniversidadPage() {
                                 return (
                                 <FormItem
                                     key={item.id}
-                                    className="flex flex-row items-center space-x-3 space-y-0 rounded-xl border p-4 hover:bg-accent/50 transition-colors cursor-pointer"
+                                    className="flex flex-col items-center justify-center space-y-2 rounded-xl border p-4 hover:bg-accent/50 transition-colors cursor-pointer space-x-0"
                                 >
+                                    <item.icon className="h-8 w-8 text-primary mb-2" />
+                                    <div className="flex items-center space-x-2">
                                     <FormControl>
-                                    <Checkbox
-                                        checked={field.value?.includes(item.label)}
-                                        onCheckedChange={(checked) => {
-                                        return checked
-                                            ? field.onChange([...(field.value || []), item.label])
-                                            : field.onChange(
-                                                field.value?.filter(
-                                                (value) => value !== item.label
-                                                )
-                                            )
-                                        }}
-                                    />
+                                      <Checkbox
+                                          checked={field.value?.includes(item.label)}
+                                          onCheckedChange={(checked) => {
+                                          return checked
+                                              ? field.onChange([...(field.value || []), item.label])
+                                              : field.onChange(
+                                                  field.value?.filter(
+                                                  (value) => value !== item.label
+                                                  )
+                                              )
+                                          }}
+                                      />
                                     </FormControl>
-                                    <FormLabel className="font-normal cursor-pointer w-full">
-                                    {item.label}
+                                    <FormLabel className="font-normal cursor-pointer text-sm">
+                                      {item.label}
                                     </FormLabel>
+                                    </div>
                                 </FormItem>
                                 )
                             }}
